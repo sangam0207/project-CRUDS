@@ -66,45 +66,47 @@
     <button onclick="deleteCookie()">Delete Cookies</button>
     <button onclick="regenerateCookie()">Add Cookies</button>
     <script>
-      function deleteCookie() {
-        // get the cookie name from the input box
-        var cookieName = document.getElementById("cookieName").value;
+     function deleteCookie() {
+  // get the cookie name from the input box
+  var cookieName = document.getElementById("cookieName").value;
 
-        localStorage.setItem(cookieName, JSON.stringify(getCookie(cookieName)));
-        // delete the cookie with domain as local
-        document.cookie =
-          cookieName + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/";
+  // save the cookie data to a file or local storage
+  localStorage.setItem(cookieName, JSON.stringify(getCookie(cookieName)));
 
-        // save the cookie data to a file or local storage
-      }
+  // delete the cookie with domain as local
+  document.cookie =
+    cookieName + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/";
+}
+ 
 
       function getCookie(cookieName) {
-        // split the cookie string into an array of cookies
-        var cookies = document.cookie.split(";");
+  // split the cookie string into an array of cookies
+  var cookies = document.cookie.split(";");
 
-        // loop through the cookies and find the one with the specified name
-        for (var i = 0; i < cookies.length; i++) {
-          var cookie = cookies[i];
-          // remove any leading spaces and check if the cookie name matches
-          while (cookie.charAt(0) === " ") {
-            cookie = cookie.substring(1);
-          }
-          if (cookie.indexOf(cookieName + "=") === 0) {
-            // return the cookie value
-            return cookie.substring(cookieName.length + 1, cookie.length);
-          }
-        }
+  // loop through the cookies and find the one with the specified name
+  for (var i = 0; i < cookies.length; i++) {
+    var cookie = cookies[i];
+    // remove any leading spaces and check if the cookie name matches
+    while (cookie.charAt(0) === " ") {
+      cookie = cookie.substring(1);
+    }
+    if (cookie.indexOf(cookieName + "=") === 0) {
+      // return the cookie value
+      return decodeURIComponent(cookie.substring(cookieName.length + 1, cookie.length));
+    }
+  }
 
-        // return null if the cookie is not found
-        return null;
-      }
+  // return null if the cookie is not found
+  return null;
+}
+
 
       function regenerateCookie() {
         // get the cookie name from the input box
         var cookieName = document.getElementById("cookieName").value;
 
         // get the cookie data from the file or local storage
-        console.log(localStorage.getItem(cookieName));
+       
         var cookieData = JSON.parse(localStorage.getItem(cookieName));
 
         // regenerate the cookie with the saved data
